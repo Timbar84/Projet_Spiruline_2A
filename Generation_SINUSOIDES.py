@@ -93,20 +93,26 @@ def draw_sinusoide(x,y,longueur,angle,nb_points,amplitude,etirement):
 
 nombre_cellule_max=40
 nb_cellule = rd.randint(1,nombre_cellule_max)
+
 for cellule in range (nb_cellule):
-    
+    longueur = int(rd.uniform(45,55))
     angle = rd.uniform(0,2*pi)
+    amplitude = rd.uniform(1.9,2.1)
+    etirement = rd.uniform(0.43,0.58)   
     x=rd.randint(0,width-1)
     y=rd.randint(0,height-1)
-    longueur=int(100*rd.uniform(0.7,1.3))
-    
-    draw_sinusoide(x,y,50,angle,longueur,2,0.5)
+
+    draw_sinusoide(x,y,longueur,angle,100,amplitude,etirement)
     
 #############################################################################
 
 ## Filtre flou
 filtre = ImageFilter.GaussianBlur(radius=0.9)
 image = image.filter(filtre)
+
+
+## Filtre luminosité
+#CODE A RAJOUTER 
 
 image.show()
 # image.save("cercleTrigo.png", "png")
