@@ -94,6 +94,63 @@ def generer_image(nombre_spiruline, categorie, nom_fich):
     filtre = ImageFilter.GaussianBlur(radius=0.9)
     image = image.filter(filtre)
     
+    ## Modification Couleur, Luminosité, Saturation
+    
+    def create_hls_array(image):
+        """
+        Cette fonction va convertir une image RGB en une nouvelle HLS, sous le format
+        d'un tableau Numpy. 
+        HLS = Couleur, Lumière, Saturation.
+        """
+     
+        
+        pixels = image.load()
+    
+        hls_array = np.empty(shape=(image.height, image.width, 3), dtype=float)
+    
+        for row in range(0, image.height):
+    
+            for column in range(0, image.width):
+    
+                rgb = pixels[column, row]
+    
+                hls = colorsys.rgb_to_hls(rgb[0]/255, rgb[1]/255, rgb[2]/255)
+    
+                hls_array[row, column, 0] = hls[0]
+                hls_array[row, column, 1] = hls[1]
+                hls_array[row, column, 2] = hls[2]
+    
+        return hls_array
+
+    def image_from_hls_array(hls_array):
+        """
+        Cette fonction va appliquer modifier aléatoirement les 3 paramètres H,L,S.
+        Ensuite, elle va générer une nouvelle image RGB format PIL.
+        """
+        
+        # COULEUR # :   cercle chromatique des couleurs. Un tour complet correpond à l'unité
+        modifCouleur = rd.uniform(-0.1,0.1)
+        # LUMIERE # :   une valeur positive augmente la luminosité, une valeur négative la diminue.  0=rien ne change / 1=tout blanc /-1=tout noir. 
+        modifLumiere = rd.uniform(-0.2,0.3)
+        # SATURATION # :une valeur positive augmente la saturation, une valeur négative la diminue (vers la couleur complementaire).  0=rien ne change / 1=saturation totale / -1=saturation totale negative.
+        modifSaturation =rd.uniform(-0.15,0.2)
+ 
+        new_image = Image.new("RGB", (hls_array.shape[1], hls_array.shape[0]))
+    
+        for row in range(0, new_image.height):
+            for column in range(0, new_image.width):
+    
+                rgb = colorsys.hls_to_rgb(hls_array[row, column, 0]+modifCouleur,
+                                          hls_array[row, column, 1]+modifLumiere,
+                                          hls_array[row, column, 2]+modifSaturation)
+    
+                rgb = (int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))
+                new_image.putpixel((column, row), rgb)
+        return new_image
+
+    image_hls = create_hls_array(image)
+    image = image_from_hls_array(image_hls)
+    
     ## Convertissement et sauvegarde en jpg
     image = image.convert("RGB")
     classe = nombre_spiruline
@@ -112,14 +169,3 @@ for classe in range(1,19):
         
     print(classe, " done")
 # image.show()
-
-
-
-
-
-
-
-
-
-
-
