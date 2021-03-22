@@ -1,0 +1,19 @@
+{
+"width":224,
+"length":224,
+"epaisseur":2,
+"bruit":0.1,
+"nombre_filament_max":40,
+"background_color":["134","180","152","255"],
+"spiruline_color":["107","161","125","255"],
+"couleur_bruit":["131","177","149","255"],
+"longueur_min":45,
+"longueur_max":55,
+"amplitude_min":1.9,
+"amplitude_max":2.1,
+"etirement_min":0.43,
+"etirement_max":0.58,
+"filtre_gaussien":0.8,
+"luminosite_min" : 0.8,
+"luminosite_max" : 1.2
+}
